@@ -17,7 +17,7 @@ const IconButton = ({type, onPressOut, id}) => {
     };
 
     return (
-        <TouchableOpacity onPressOut={onPressOut}>
+        <TouchableOpacity onPressOut={_onPressOut}>
             <Icon source={type} />
         </TouchableOpacity>
     );
@@ -30,7 +30,7 @@ IconButton.defaultProps = {
 IconButton.propTypes = {
     type : PropTypes.oneOf(Object.values(images)).isRequired,
     onPressOut : PropTypes.func,
-    id:PropTypes.string,
+    id : PropTypes.string,
 };
 
 export default IconButton;

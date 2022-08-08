@@ -33,15 +33,19 @@ export default function App() {
     const [newTask, setNewTask] = useState('');
     const [tasks, setTasks] = useState({
         '1' : {id:'1', text:"유튜브 보기", completed:false},
-        '2' : {id:'2', text:"유튜브 보기", completed:false},
-        '3' : {id:'3', text:"유튜브 보기", completed:true},
-        '4' : {id:'4', text:"유튜브 보기", completed:true},
+        '2' : {id:'2', text:"React Native", completed:false},
+        '3' : {id:'3', text:"책 읽기", completed:false},
+        '4' : {id:'4', text:"할일 추가해주세요", completed:true},
     });
+
+    const _onBlur = () => {
+        setNewTask('');
+    };
 
     const _addTask = () => {
         const ID = Date.now().toString();
         const newTaskObject = {
-            [ID] : {id:ID, text:newTask, completed:false},
+            [ID] : {id:ID, text: newTask, completed:false },
         };
         setNewTask('');
         setTasks({...tasks, ...newTaskObject});
@@ -51,6 +55,20 @@ export default function App() {
         const currentTasks = Object.assign({}, tasks);
         delete currentTasks[id];
         setTasks(currentTasks);
+    };
+
+    const _toggleTask = id => {
+        const currentTasks = Object.assign({}, tasks);
+        currentTasks[id]['completed'] = !currentTasks[id]['completed'];
+        setTasks(currentTasks);
+    }
+
+    const _updateTask = item => {
+        const currentTasks = item => {
+            const currentTasks = Object.assign({}, tasks);
+            currentTasks[item.id] = item;
+            setTasks(currentTasks);
+        }
     }
 
     const _handleTextChange = text => {
@@ -66,16 +84,23 @@ export default function App() {
                 />
                 <Title>ToDo List</Title>
                 <Input
-                    placeholder="✏️ 할일을 입력하시라세요"
+                    placeholder="✏️ 할일을 입력하세요"
                     value = {newTask}
                     onChangeText={_handleTextChange}
                     onSubmitEditing={_addTask}
+                    onBlur={_onBlur}
                 />
                 <List width={width}>
                     {Object.values(tasks)
                         .reverse()
                         .map(item => (
-                            <Task key={item.id} item={item} deleteTask={_deleteTask} />
+                            <Task
+                                key={item.id}
+                                item={item}
+                                deleteTask={_deleteTask}
+                                toggleTask={_toggleTask}
+                                updateTask={_updateTask}
+                            />
                         ))}
                 </List>
             </Container>
